@@ -35,14 +35,15 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    val navStateBig = rememberNavController()
 
                     val repo = Repository()
                     val viewModel = MainViewModel(repo)
-                    val model = WhatsAppVM(viewModel,this)
+                    val model = WhatsAppVM(viewModel,this , navController = navStateBig )
 
 
                     Box(modifier = Modifier.fillMaxSize()){
-                        val navStateBig = rememberNavController()
+
                         NavHost(navController = navStateBig , startDestination = "lsPage" ){
                             composable("lsPage"){
                                 LSComp(navController = navStateBig, model = model )
