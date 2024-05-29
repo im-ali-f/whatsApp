@@ -53,7 +53,10 @@ fun HomeComp(navController: NavController, model: WhatsAppVM) {
                 val navStatusInner = rememberNavController()
                 NavHost(navController = navStatusInner, startDestination = "chatsPart") {
                     composable("chatsPart"){
-                        ChatsComp(model = model)
+                        ChatsComp(model = model , navController)
+                    }
+                    composable("specificChatPart"){
+                        SpecificChatComp(model,navController)//remove she az inja
                     }
                 }
             }

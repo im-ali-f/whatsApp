@@ -1,7 +1,14 @@
 package com.example.whatsapp.HomePage
 
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.AnchoredDraggableState
+import androidx.compose.foundation.gestures.DraggableAnchors
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.anchoredDraggable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,16 +19,21 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.rememberSwipeableState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,8 +43,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.whatsapp.R
 import com.example.whatsapp.VMs.App.WhatsAppVM
 import com.example.whatsapp.ui.theme.archiveChatColor
@@ -43,9 +57,10 @@ import com.example.whatsapp.ui.theme.mainGray
 import com.example.whatsapp.ui.theme.mainMessageTextColor
 import com.example.whatsapp.ui.theme.messageIconColor
 import com.example.whatsapp.ui.theme.moreChatColor
+import kotlin.math.roundToInt
 
 @Composable
-fun ChatsComp(model: WhatsAppVM) {
+fun ChatsComp(model: WhatsAppVM, innerNavController: NavController) {
 
 
     Column(Modifier.fillMaxSize()) {
@@ -83,7 +98,8 @@ fun ChatsComp(model: WhatsAppVM) {
         }
 
         //call chats here
-        chatBuilder()
+        //this one must be dynamic
+        chatBuilder(innerNavController =innerNavController )
 
         //end big main Column
     }
@@ -91,20 +107,53 @@ fun ChatsComp(model: WhatsAppVM) {
 
 }
 
+@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun chatBuilder() {
+fun chatBuilder(innerNavController: NavController) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
 
     var scrollState = rememberScrollState()
 
-
+    // 1
+    val state = remember {
+        AnchoredDraggableState(
+            // 2
+            initialValue = DragAnchors.Start,
+            // 3
+            positionalThreshold = { distance: Float -> distance * 0.5f },
+            // 4
+            velocityThreshold =  { 100f },
+            // 5
+            animationSpec = tween(),
+        ).apply {
+            // 6
+            updateAnchors(
+                // 7
+                DraggableAnchors {
+                    DragAnchors.Start at 0f
+                    DragAnchors.End at -550f
+                }
+            )
+        }
+    }
     //test Row
     Row(
         Modifier
             .width(screenWidth.dp)
             .height(99.dp)
             .horizontalScroll(scrollState)
-            .clickable { }
+            .offset {
+                IntOffset(
+                    // 2
+                    x = state.requireOffset().roundToInt(),
+                    y = 0,
+                )
+            }
+            .anchoredDraggable(state, Orientation.Horizontal)
+            //.horizontalScroll(scrollState)
+            .clickable {
+                //innerNavController.navigate("specificChatPart")
+            }
             .padding(start = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween) {
@@ -113,6 +162,7 @@ fun chatBuilder() {
             Modifier.width(screenWidth.dp), verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
+
             Box(
                 modifier = Modifier
                     .size(52.dp)
@@ -231,11 +281,18 @@ fun chatBuilder() {
                     .fillMaxHeight()
                     .width(99.dp)
                     .background(moreChatColor)
-                    .clickable { }
-                , contentAlignment = Alignment.Center
-            ){
-                Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(modifier = Modifier.size(24.dp), painter = painterResource(id = R.drawable.more), tint = Color.White, contentDescription = "more Icon" )
+                    .clickable { }, contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        painter = painterResource(id = R.drawable.more),
+                        tint = Color.White,
+                        contentDescription = "more Icon"
+                    )
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
                         text = "More",
@@ -253,12 +310,19 @@ fun chatBuilder() {
                     .fillMaxHeight()
                     .width(99.dp)
                     .background(archiveChatColor)
-                    .clickable { }
-                , contentAlignment = Alignment.Center
+                    .clickable { }, contentAlignment = Alignment.Center
 
-            ){
-                Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(modifier = Modifier.size(24.dp), painter = painterResource(id = R.drawable.archive), tint = Color.White, contentDescription = "more Icon" )
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        painter = painterResource(id = R.drawable.archive),
+                        tint = Color.White,
+                        contentDescription = "archive Icon"
+                    )
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
                         text = "Archive",
@@ -274,8 +338,15 @@ fun chatBuilder() {
 
     }
 
+    //test scroll
+    //Text(text = "${scrollState.value}")
 
     //test Row
 
 
+}
+
+enum class DragAnchors {
+    Start,
+    End,
 }
