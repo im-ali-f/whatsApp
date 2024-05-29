@@ -19,6 +19,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.whatsapp.HomePage.HomeComp
 import com.example.whatsapp.VMs.API.MainViewModel
 import com.example.whatsapp.VMs.API.Repository
 import com.example.whatsapp.VMs.App.WhatsAppVM
@@ -44,12 +45,12 @@ class MainActivity : ComponentActivity() {
 
                     Box(modifier = Modifier.fillMaxSize()){
 
-                        NavHost(navController = navStateBig , startDestination = "lsPage" ){
+                        NavHost(navController = navStateBig , startDestination = "homePage" ){
                             composable("lsPage"){
                                 LSComp(navController = navStateBig, model = model )
                             }
                             composable("homePage"){
-                                //LSComp(navController = navStateBig, model = model )
+                                HomeComp(navController = navStateBig, model =model )
                             }
                         }
                     }

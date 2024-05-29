@@ -88,4 +88,8 @@ class WhatsAppVM(private val mainViewModel: MainViewModel ,private val owner: Li
         }
     }
 
+
+    //homepage
+    val selectedBottomBar = mutableStateOf(0)
+
 }

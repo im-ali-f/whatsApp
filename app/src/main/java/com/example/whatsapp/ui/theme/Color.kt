@@ -15,3 +15,5 @@ val mainGray = Color(0xFFF6F6F6)
 val mainBlue = Color(0xFF3E70A7)
 val disabledText = Color(0xFFD1D1D6)
 val enabledText = Color(0xFF3E70A7)
+
+val messageIconColor = Color(0xA83C434D)
