@@ -20,6 +20,7 @@ class WhatsAppVM(private val mainViewModel: MainViewModel ,private val owner: Li
     val canContinue = mutableStateOf(false)
     val enteredName = mutableStateOf("")
     val enteredPass = mutableStateOf("")
+    val passwordVisible = mutableStateOf(false)
 
     fun GetUsersListResponser() {
         mainViewModel.GetUsersList()
