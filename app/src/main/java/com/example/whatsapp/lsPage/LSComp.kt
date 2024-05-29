@@ -134,5 +134,44 @@ fun LSComp(navController: NavController, model: WhatsAppVM) {
                 .background(disabledText)
         )
         //end sep
+
+
+        Box(modifier = Modifier.fillMaxWidth()) {
+            TextField(
+                value = model.enteredPass.value,
+                onValueChange = { new -> model.enteredPass.value = new },
+                modifier = Modifier
+                    .padding(0.dp)
+                    .fillMaxWidth(),
+                textStyle = TextStyle(fontSize = 26.sp, fontWeight = FontWeight(500)),
+                placeholder = {
+                    Text(
+                        text = "password",
+                        fontWeight = FontWeight(300),
+                        fontSize = 23.sp,
+                        color = disabledText
+
+                    )
+                },
+
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.White,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    cursorColor = mainBlue,
+                    unfocusedContainerColor = Color.White,
+                ),
+
+                )
+        }
+
+        //sep
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(disabledText)
+        )
+        //end sep
     }
 }
