@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberSwipeableState
 import androidx.compose.material3.Icon
@@ -63,7 +64,10 @@ import kotlin.math.roundToInt
 fun ChatsComp(model: WhatsAppVM, innerNavController: NavController) {
 
 
-    Column(Modifier.fillMaxSize()) {
+    Column(
+        Modifier
+            .fillMaxSize()
+        ) {
         //main big Column
         Row(
             Modifier
@@ -99,7 +103,19 @@ fun ChatsComp(model: WhatsAppVM, innerNavController: NavController) {
 
         //call chats here
         //this one must be dynamic
-        chatBuilder(innerNavController =innerNavController )
+        var scrollState = rememberScrollState()
+        Column(Modifier.fillMaxSize().verticalScroll(scrollState)) {
+            chatBuilder(innerNavController =innerNavController )
+            chatBuilder(innerNavController =innerNavController )
+            chatBuilder(innerNavController =innerNavController )
+            chatBuilder(innerNavController =innerNavController )
+            chatBuilder(innerNavController =innerNavController )
+            chatBuilder(innerNavController =innerNavController )
+            chatBuilder(innerNavController =innerNavController )
+            chatBuilder(innerNavController =innerNavController )
+            chatBuilder(innerNavController =innerNavController )
+        }
+
 
         //end big main Column
     }
@@ -145,7 +161,9 @@ fun chatBuilder(innerNavController: NavController) {
             .offset {
                 IntOffset(
                     // 2
-                    x = state.requireOffset().roundToInt(),
+                    x = state
+                        .requireOffset()
+                        .roundToInt(),
                     y = 0,
                 )
             }
