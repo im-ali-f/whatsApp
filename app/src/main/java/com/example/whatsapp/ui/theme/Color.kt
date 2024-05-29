@@ -17,3 +17,4 @@ val disabledText = Color(0xFFD1D1D6)
 val enabledText = Color(0xFF3E70A7)
 
 val messageIconColor = Color(0xA83C434D)
+val mainMessageTextColor= Color(0xFF8E8E93)
