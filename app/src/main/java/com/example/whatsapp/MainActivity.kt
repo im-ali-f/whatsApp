@@ -43,6 +43,7 @@ class MainActivity : ComponentActivity() {
                     val model = WhatsAppVM(viewModel,this , navController = navStateBig )
 
 
+
                     Box(modifier = Modifier.fillMaxSize()){
 
                         NavHost(navController = navStateBig , startDestination = "homePage" ){
