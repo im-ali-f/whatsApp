@@ -42,8 +42,10 @@ fun SpecificChatComp(model: WhatsAppVM, navControllerBig: NavController) {
                     detectTapGestures(onTap = {
                         focusManager.clearFocus()
                     })
-                }){
-            Box(modifier = Modifier.size(40.dp).background(Color.Cyan).align(Alignment.BottomCenter).clickable { })
+                }) {
+
+            ChatComp()
+
         }
     }
 }
