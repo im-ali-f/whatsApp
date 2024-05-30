@@ -2,7 +2,6 @@ package com.example.whatsapp.HomePage
 
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.AnchoredDraggableState
@@ -23,17 +22,13 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.rememberSwipeableState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,16 +47,14 @@ import com.example.whatsapp.R
 import com.example.whatsapp.VMs.App.WhatsAppVM
 import com.example.whatsapp.ui.theme.archiveChatColor
 import com.example.whatsapp.ui.theme.disabledText
-import com.example.whatsapp.ui.theme.enabledText
 import com.example.whatsapp.ui.theme.mainBlue
-import com.example.whatsapp.ui.theme.mainGray
 import com.example.whatsapp.ui.theme.mainMessageTextColor
 import com.example.whatsapp.ui.theme.messageIconColor
 import com.example.whatsapp.ui.theme.moreChatColor
 import kotlin.math.roundToInt
 
 @Composable
-fun ChatsComp(model: WhatsAppVM, innerNavController: NavController) {
+fun ChatsComp(model: WhatsAppVM, innerNavController: NavController , navControllerBig: NavController) {
 
 
     Column(
@@ -105,15 +98,15 @@ fun ChatsComp(model: WhatsAppVM, innerNavController: NavController) {
         //this one must be dynamic
         var scrollState = rememberScrollState()
         Column(Modifier.fillMaxSize().verticalScroll(scrollState)) {
-            chatBuilder(innerNavController =innerNavController )
-            chatBuilder(innerNavController =innerNavController )
-            chatBuilder(innerNavController =innerNavController )
-            chatBuilder(innerNavController =innerNavController )
-            chatBuilder(innerNavController =innerNavController )
-            chatBuilder(innerNavController =innerNavController )
-            chatBuilder(innerNavController =innerNavController )
-            chatBuilder(innerNavController =innerNavController )
-            chatBuilder(innerNavController =innerNavController )
+            chatBuilder(innerNavController =innerNavController , navControllerBig = navControllerBig )
+            chatBuilder(innerNavController =innerNavController , navControllerBig = navControllerBig )
+            chatBuilder(innerNavController =innerNavController , navControllerBig = navControllerBig )
+            chatBuilder(innerNavController =innerNavController , navControllerBig = navControllerBig )
+            chatBuilder(innerNavController =innerNavController , navControllerBig = navControllerBig )
+            chatBuilder(innerNavController =innerNavController , navControllerBig = navControllerBig )
+            chatBuilder(innerNavController =innerNavController , navControllerBig = navControllerBig )
+            chatBuilder(innerNavController =innerNavController , navControllerBig = navControllerBig )
+            chatBuilder(innerNavController =innerNavController , navControllerBig = navControllerBig )
         }
 
 
@@ -125,7 +118,7 @@ fun ChatsComp(model: WhatsAppVM, innerNavController: NavController) {
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun chatBuilder(innerNavController: NavController) {
+fun chatBuilder(innerNavController: NavController , navControllerBig: NavController) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
 
     var scrollState = rememberScrollState()
@@ -156,7 +149,8 @@ fun chatBuilder(innerNavController: NavController) {
     Row(
         Modifier
             .width(screenWidth.dp)
-            .height(99.dp)
+            .height(97.dp)
+
             .horizontalScroll(scrollState)
             .offset {
                 IntOffset(
@@ -170,7 +164,7 @@ fun chatBuilder(innerNavController: NavController) {
             .anchoredDraggable(state, Orientation.Horizontal)
             //.horizontalScroll(scrollState)
             .clickable {
-                //innerNavController.navigate("specificChatPart")
+                navControllerBig.navigate("specificChatPart")
             }
             .padding(start = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -264,7 +258,7 @@ fun chatBuilder(innerNavController: NavController) {
                     ) {
                         Icon(
                             modifier = Modifier
-                                .size(20.dp)
+                                .size(15.dp)
                                 .align(Alignment.CenterStart),
                             painter = painterResource(id = R.drawable.shape),
                             tint = messageIconColor,
