@@ -38,6 +38,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -59,6 +61,7 @@ import com.example.whatsapp.ui.theme.mainBlue
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomChatBarComp(model:WhatsAppVM) {
+
     val animatedBox by animateFloatAsState(
         targetValue = if (model.enteredChat.value == "") 0.7f else 0.87f,
         animationSpec = tween(
@@ -66,6 +69,9 @@ fun BottomChatBarComp(model:WhatsAppVM) {
         ),
         label = "box animation"
     )
+
+
+
     Box(
         Modifier
             .fillMaxWidth()
@@ -156,7 +162,7 @@ fun BottomChatBarComp(model:WhatsAppVM) {
                         enabled = true,
                         visualTransformation = VisualTransformation.None,
                         interactionSource = interactionSource,
-                        contentPadding = PaddingValues(start = 0.dp, end = 0.dp, top = 0.dp, bottom = 10.dp), // this is how you can remove the padding
+                        contentPadding = PaddingValues(start = 0.dp, end = 0.dp, top = 0.dp, bottom = 0.dp), // this is how you can remove the padding
                     )
                 }
             }

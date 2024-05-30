@@ -42,7 +42,6 @@ import com.example.whatsapp.ui.theme.mainMessageTextColor
 fun TopChatBarComp(navControllerBig: NavController) {
         Row(
             modifier = Modifier
-
                 .fillMaxWidth()
                 .height(60.dp)
                 .background(mainGray)
