@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.whatsapp.R
 import com.example.whatsapp.VMs.App.WhatsAppVM
+import com.example.whatsapp.ui.theme.bottomBarBGColor
 import com.example.whatsapp.ui.theme.chatBorderColor
 import com.example.whatsapp.ui.theme.disabledText
 import com.example.whatsapp.ui.theme.mainBlue
@@ -57,12 +58,9 @@ import com.example.whatsapp.ui.theme.mainBlue
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomChatBarComp() {
-    var enteredChat = remember {
-        mutableStateOf("")
-    }
+fun BottomChatBarComp(model:WhatsAppVM) {
     val animatedBox by animateFloatAsState(
-        targetValue = if (enteredChat.value == "") 0.7f else 0.87f,
+        targetValue = if (model.enteredChat.value == "") 0.7f else 0.87f,
         animationSpec = tween(
             durationMillis = 300
         ),
@@ -71,7 +69,7 @@ fun BottomChatBarComp() {
     Box(
         Modifier
             .fillMaxWidth()
-            .background(Color.White)
+            .background(bottomBarBGColor)
             .padding(bottom = 5.dp)
             .imePadding()
     ) {
@@ -105,7 +103,7 @@ fun BottomChatBarComp() {
                     .fillMaxWidth(animatedBox)
                     //.height(40.dp)
                     .clip(RoundedCornerShape(20.dp))
-                    //.background(Color.Blue)
+                    .background(Color.White)
                     .border(0.7.dp, chatBorderColor, RoundedCornerShape(20.dp))
                     .padding(start = 10.dp)
             ){
@@ -122,9 +120,9 @@ fun BottomChatBarComp() {
                 BasicTextField(
 
                     //value = model.enteredChat.value,
-                    value = enteredChat.value,
+                    value = model.enteredChat.value,
                     onValueChange = { new ->
-                        enteredChat.value = new
+                        model.enteredChat.value = new
                     },
 
                     /*onValueChange = { new ->
@@ -152,7 +150,7 @@ fun BottomChatBarComp() {
                             unfocusedContainerColor = Color.White,
                         ),
                        // value = model.enteredChat.value,
-                        value = enteredChat.value,
+                        value = model.enteredChat.value,
                         singleLine = true,
                         innerTextField = innerTextField,
                         enabled = true,
@@ -164,7 +162,7 @@ fun BottomChatBarComp() {
             }
 
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.align(Alignment.Bottom)) {
-                if(enteredChat.value != ""){
+                if(model.enteredChat.value != ""){
                     IconButton(onClick = { }) {
                         Icon(
                             painter = painterResource(id = R.drawable.baseline_send_24),
@@ -201,8 +199,3 @@ fun BottomChatBarComp() {
     
 }
 
-@Preview
-@Composable
-fun preview(): Unit {
-    BottomChatBarComp()
-}
