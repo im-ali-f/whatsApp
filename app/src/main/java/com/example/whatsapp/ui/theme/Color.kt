@@ -20,3 +20,5 @@ val messageIconColor = Color(0xA83C434D)
 val mainMessageTextColor= Color(0xFF8E8E93)
 val moreChatColor= Color(0xFFC6C6CC)
 val archiveChatColor= Color(0xFF3E70A7)
+
+val chatBorderColor= Color(0xFF8E8E93)

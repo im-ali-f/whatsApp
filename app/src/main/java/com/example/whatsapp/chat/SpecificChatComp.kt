@@ -11,7 +11,8 @@ import com.example.whatsapp.VMs.App.WhatsAppVM
 fun SpecificChatComp(model: WhatsAppVM, navControllerBig: NavController) {
     Scaffold(
         topBar = { TopChatBarComp(navControllerBig = navControllerBig)},
-        bottomBar = {},
+      //  bottomBar = {BottomChatBarComp(model)},
+        bottomBar = {BottomChatBarComp()},
     ){
 
     }
