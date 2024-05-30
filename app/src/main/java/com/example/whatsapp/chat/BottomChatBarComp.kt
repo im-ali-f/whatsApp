@@ -169,7 +169,7 @@ fun BottomChatBarComp(model:WhatsAppVM) {
 
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.align(Alignment.Bottom)) {
                 if(model.enteredChat.value != ""){
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = { model.SendMessage()}) {
                         Icon(
                             painter = painterResource(id = R.drawable.baseline_send_24),
                             modifier = Modifier.size(22.dp),

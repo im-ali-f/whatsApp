@@ -107,91 +107,105 @@ class WhatsAppVM(
     //chat page
     val enteredChat = mutableStateOf("")
 
-     val chatList = mutableListOf(
-         mapOf(
-             "sender" to "Ali farhad",
-             "sendDate" to "11/11/2011",
-             "sendTime" to "11:11",
-             "editDate" to "12/11/2011",
-             "editTime" to "12:12",
-             "text" to "Welcome To Chat !",
-             "type" to "send",
-         ),
-         mapOf(
-             "sender" to "Ali farhad",
-             "sendDate" to "11/11/2011",
-             "sendTime" to "11:11",
-             "editDate" to "12/11/2011",
-             "editTime" to "12:12",
-             "text" to "try to chat with me!",
-             "type" to "send",
+    val chatList = mutableStateOf<List<Map<String, String>>>(
+        listOf(
+            mapOf(
+                "sender" to "Ali farhad",
+                "sendDate" to "11/11/2011",
+                "sendTime" to "11:11",
+                "editDate" to "12/11/2011",
+                "editTime" to "12:12",
+                "text" to "Welcome To Chat !",
+                "type" to "send",
+            ),
+            mapOf(
+                "sender" to "Ali farhad",
+                "sendDate" to "11/11/2011",
+                "sendTime" to "11:11",
+                "editDate" to "12/11/2011",
+                "editTime" to "12:12",
+                "text" to "try to chat with me!",
+                "type" to "send",
 
-         ),
-         mapOf(
-             "sender" to "ADMIN",
-             "sendDate" to "11/11/2011",
-             "sendTime" to "11:11",
-             "editDate" to "12/11/2011",
-             "editTime" to "12:12",
-             "text" to "trying emphty",
-             "type" to "receive",
+                ),
+            mapOf(
+                "sender" to "ADMIN",
+                "sendDate" to "11/11/2011",
+                "sendTime" to "11:11",
+                "editDate" to "12/11/2011",
+                "editTime" to "12:12",
+                "text" to "trying empty",
+                "type" to "receive",
 
-         ),
-         mapOf(
-             "sender" to "ADMIN",
-             "sendDate" to "11/11/2011",
-             "sendTime" to "11:11",
-             "editDate" to "12/11/2011",
-             "editTime" to "12:12",
-             "text" to "",
-             "type" to "receive",
-         ),
-         mapOf(
-             "sender" to "Ali farhad",
-             "sendDate" to "11/11/2011",
-             "sendTime" to "11:11",
-             "editDate" to "12/11/2011",
-             "editTime" to "12:12",
-             "text" to "trying big one !",
-             "type" to "send",
-         ),
-         mapOf(
-             "sender" to "Ali farhad",
-             "sendDate" to "11/11/2011",
-             "sendTime" to "11:11",
-             "editDate" to "12/11/2011",
-             "editTime" to "12:12",
-             "text" to "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.\n" +
-                     "\n" +
-                     "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from \"de Finibus Bonorum et Malorum\" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",
-             "type" to "send",
-         ),
-         mapOf(
-             "sender" to "ADMIN",
-             "sendDate" to "11/11/2011",
-             "sendTime" to "11:11",
-             "editDate" to "12/11/2011",
-             "editTime" to "12:12",
-             "text" to "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.\n" +
-                     "\n" +
-                     "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from \"de Finibus Bonorum et Malorum\" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",
-             "type" to "receive",
-             ),
-         mapOf(
-             "sender" to "Ali farhad",
-             "sendDate" to "11/11/2011",
-             "sendTime" to "11:11",
-             "editDate" to "12/11/2011",
-             "editTime" to "12:12",
-             "text" to "Now ; your turn to chat with us !",
-             "type" to "send",
-             ),
-
-
-         )
+                ),
+            mapOf(
+                "sender" to "ADMIN",
+                "sendDate" to "11/11/2011",
+                "sendTime" to "11:11",
+                "editDate" to "12/11/2011",
+                "editTime" to "12:12",
+                "text" to "",
+                "type" to "receive",
+            ),
+            mapOf(
+                "sender" to "Ali farhad",
+                "sendDate" to "11/11/2011",
+                "sendTime" to "11:11",
+                "editDate" to "12/11/2011",
+                "editTime" to "12:12",
+                "text" to "trying big one !",
+                "type" to "send",
+            ),
+            mapOf(
+                "sender" to "Ali farhad",
+                "sendDate" to "11/11/2011",
+                "sendTime" to "11:11",
+                "editDate" to "12/11/2011",
+                "editTime" to "12:12",
+                "text" to "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.\n" +
+                        "\n" +
+                        "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from \"de Finibus Bonorum et Malorum\" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",
+                "type" to "send",
+            ),
+            mapOf(
+                "sender" to "ADMIN",
+                "sendDate" to "11/11/2011",
+                "sendTime" to "11:11",
+                "editDate" to "12/11/2011",
+                "editTime" to "12:12",
+                "text" to "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.\n" +
+                        "\n" +
+                        "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from \"de Finibus Bonorum et Malorum\" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",
+                "type" to "receive",
+            ),
+            mapOf(
+                "sender" to "Ali farhad",
+                "sendDate" to "11/11/2011",
+                "sendTime" to "11:11",
+                "editDate" to "12/11/2011",
+                "editTime" to "12:12",
+                "text" to "Now ; your turn to chat with us !",
+                "type" to "send",
+            ),
 
 
+            )
+    )
 
+
+    fun SendMessage() {
+        val mapToSend = mapOf(
+            "sender" to "Ali farhad",
+            "sendDate" to "11/11/2011",
+            "sendTime" to "11:11",
+            "editDate" to "12/11/2011",
+            "editTime" to "12:12",
+            "text" to "${enteredChat.value}",
+            "type" to "send",
+        )
+        chatList.value = chatList.value.plus(mapToSend)
+        enteredChat.value = ""
+    }
 
 
 }

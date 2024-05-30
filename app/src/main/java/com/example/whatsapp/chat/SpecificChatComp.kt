@@ -44,7 +44,7 @@ fun SpecificChatComp(model: WhatsAppVM, navControllerBig: NavController) {
                     })
                 }) {
 
-            ChatComp()
+            ChatComp(model)
 
         }
     }

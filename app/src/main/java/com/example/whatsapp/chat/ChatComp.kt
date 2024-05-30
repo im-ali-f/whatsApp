@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -20,91 +21,121 @@ import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.whatsapp.VMs.App.WhatsAppVM
 import com.example.whatsapp.ui.theme.mainBlue
+import com.example.whatsapp.ui.theme.sendBGCColor
 
 @Composable
-fun ChatComp() {
-    val chatList = mutableListOf(
-        mapOf(
-            "sender" to "Ali farhad",
-            "sendDate" to "11/11/2011",
-            "sendTime" to "11:11",
-            "editDate" to "12/11/2011",
-            "editTime" to "12:12",
-            "text" to "Now ; your turn to chat with us !",
-            "type" to "send",
-        ),
-    )
+fun ChatComp(model:WhatsAppVM) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Gray), verticalArrangement = Arrangement.Bottom
+            .background(Color.LightGray)
+        , verticalArrangement = Arrangement.Bottom
     ) {
-        LazyColumn {
-            items(chatList) { chatMap ->
+        LazyColumn(
+            Modifier
+                .fillMaxSize()
+                .padding(start = 7.dp, end = 7.dp)) {
+            item { 
+                Spacer(modifier = Modifier.heightIn(10.dp))
+            }
+            items(model.chatList.value) { chatMap ->
+                CompositionLocalProvider(LocalLayoutDirection provides if(chatMap["type"] == "send")LayoutDirection.Rtl else LayoutDirection.Ltr ) {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            //.background(Color.Blue)
+                    ) {
+                        Row(Modifier.padding()) {
+                            if(chatMap["type"] == "send"){
+                                Canvas(modifier = Modifier
+                                    .size(25.dp)
+                                    .align(Alignment.Bottom)
+                                    .offset(y = -10.dp, x = 8.dp)
+                                    )
+                                {
+                                    val path = Path().apply {
+                                        moveTo(size.width, size.height-30f)
+                                        //lineTo(size.width , size.height)
+                                        cubicTo(x1 = size.width,y1=size.height-30f , x2 = size.width/2, y2 = size.height, x3= 0f, y3 =size.height )
+                                        lineTo(0f , 0f)
+                                        cubicTo(x1 = 0f,y1=0f , x2 = size.width/2, y2 = size.height/2+20f, x3= size.width, y3=size.height-30f )
+                                        close()
+                                    }
+                                    drawPath(path = path, color = sendBGCColor)
+                                }
 
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .background(Color.Blue)
-                ) {
-                    Row(Modifier.padding(start = 7.dp)) {
-                        Canvas(modifier = Modifier
-                            .size(25.dp)
-                            .align(Alignment.Bottom)
-                            .offset(y = -10.dp, x = 2.dp)) {
-                            val path = Path().apply {
-                                moveTo(0f, size.height-30f)
-                                //lineTo(size.width , size.height)
-                                cubicTo(x1 = 0f,y1=size.height-30f , x2 = size.width/2, y2 = size.height, x3= size.width, y3 =size.height )
-                                lineTo(size.width , 0f)
-                                cubicTo(x1 = size.width,y1=0f , x2 = size.width/2, y2 = size.height/2+20f, x3= 0f, y3 =size.height-30f )
-                                close()
                             }
-                            drawPath(path = path, color = Color.Red)
-                        }
+                            else{
+                                Canvas(modifier = Modifier
+                                    .size(25.dp)
+                                    .align(Alignment.Bottom)
+                                    .offset(y = -10.dp, x = 8.dp))
+                                {
+                                    val path = Path().apply {
+                                        moveTo(0f, size.height-30f)
+                                        //lineTo(size.width , size.height)
+                                        cubicTo(x1 = 0f,y1=size.height-30f , x2 = size.width/2, y2 = size.height, x3= size.width, y3 =size.height )
+                                        lineTo(size.width , 0f)
+                                        cubicTo(x1 = size.width,y1=0f , x2 = size.width/2, y2 = size.height/2+20f, x3= 0f, y3 =size.height-30f )
+                                        close()
+                                    }
+                                    drawPath(path = path, color = Color.White)
+                                }
+                            }
 
-                        Box(
-                            modifier = Modifier
-                                .padding(end = 5.dp, bottom = 5.dp)
-                                .widthIn(min = 100.dp, max = 270.dp)
-                                .heightIn(min = 40.dp)
-                                .clip(RoundedCornerShape(8.dp))
-                                .background(Color.Yellow)
-                                .padding(5.dp)
-                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .padding(end = 5.dp, bottom = 5.dp)
+                                    .widthIn(min = 100.dp, max = 270.dp)
+                                    .heightIn(min = 40.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(if (chatMap["type"] == "send") sendBGCColor else Color.White)
+                                    .padding(5.dp)
+                            ) {
 
-                            Text(
-                                text = "StatusStatusStatusStatusStatusS ugdkjwg jwdjh   jhd whklhdwkhkdw    dwkhktatusStatus Status Status Status Status",
-                                fontWeight = FontWeight(400),
-                                fontSize = 16.sp,
-                                color = Color.Black,
-                            )
-                            Box(modifier = Modifier.align(Alignment.BottomEnd) ){
-                                Text(
-                                    modifier = Modifier.alpha(0.5f),
-                                    text = "11:45",
-                                    fontWeight = FontWeight(400),
-                                    fontSize = 11.sp,
-                                    color = Color.Black,
-                                    textAlign = TextAlign.Center,
-                                )
+                                CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr ) {
+                                    chatMap["text"]?.let {
+                                        Text(
+                                            text = it + "\n",
+                                            fontWeight = FontWeight(400),
+                                            fontSize = 16.sp,
+                                            color = Color.Black,
+                                            //textAlign = if(chatMap["type"] == "send")TextAlign.End else TextAlign.Start
+                                        )
+                                    }
+                                }
+                                Box(modifier = Modifier.align(if(chatMap["type"] == "send") Alignment.BottomStart else Alignment.BottomEnd) ){
+                                    Text(
+                                        modifier = Modifier.alpha(0.5f),
+                                        text = "11:45",
+                                        fontWeight = FontWeight(400),
+                                        fontSize = 11.sp,
+                                        color = Color.Black,
+                                        textAlign = TextAlign.Center,
+                                    )
+                                }
                             }
                         }
                     }
                 }
+
 
             }
 
@@ -113,9 +144,3 @@ fun ChatComp() {
     }
 }
 
-
-@Preview
-@Composable
-fun prev() {
-    ChatComp()
-}

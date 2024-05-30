@@ -23,3 +23,4 @@ val archiveChatColor= Color(0xFF3E70A7)
 
 val chatBorderColor= Color(0xFF8E8E93)
 val bottomBarBGColor= Color(0xFFF6F6F6)
+val sendBGCColor= Color(0xFFDCF7C5)
