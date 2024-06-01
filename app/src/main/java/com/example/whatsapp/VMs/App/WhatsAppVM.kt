@@ -9,6 +9,9 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.whatsapp.VMs.API.MainViewModel
 import com.example.whatsapp.VMs.API.UserInfoResponseListItem
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class WhatsAppVM(
     private val mainViewModel: MainViewModel,
@@ -214,9 +217,7 @@ class WhatsAppVM(
         chatList.value[chatList.value.lastIndex]["haveTail"] = "false"
         chatList.value = chatList.value.plus(mapToSend)
         enteredChat.value = ""
+
     }
-
-    var turnCounter = mutableStateOf(0)
-
 
 }

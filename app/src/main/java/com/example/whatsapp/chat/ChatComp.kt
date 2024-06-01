@@ -17,11 +17,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -42,16 +47,23 @@ import com.example.whatsapp.ui.theme.sendBGCColor
 @Composable
 fun ChatComp(model:WhatsAppVM) {
 
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.LightGray)
         , verticalArrangement = Arrangement.Bottom
     ) {
+        val scrollState = rememberLazyListState()
+        LaunchedEffect(model.chatList.value) {
+            scrollState.animateScrollToItem(index = model.chatList.value.size)
+        }
         LazyColumn(
             Modifier
                 .fillMaxSize()
-                .padding(start = 7.dp, end = 7.dp)) {
+                .padding(start = 7.dp, end = 7.dp),
+            state = scrollState,
+        ) {
             item { 
                 Spacer(modifier = Modifier.heightIn(10.dp))
             }
