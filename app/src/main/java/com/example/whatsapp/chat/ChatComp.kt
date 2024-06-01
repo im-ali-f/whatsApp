@@ -63,42 +63,77 @@ fun ChatComp(model:WhatsAppVM) {
                             //.background(Color.Blue)
                     ) {
                         Row(Modifier.padding()) {
-                            if(chatMap["type"] == "send"){
-                                Canvas(modifier = Modifier
-                                    .size(25.dp)
-                                    .align(Alignment.Bottom)
-                                    .offset(y = -10.dp, x = 8.dp)
+
+                                if(chatMap["type"] == "send"){
+                                    Canvas(modifier = Modifier
+                                        .size(25.dp)
+                                        .align(Alignment.Bottom)
+                                        .offset(y = -10.dp, x = 8.dp)
                                     )
-                                {
-                                    val path = Path().apply {
-                                        moveTo(size.width, size.height-30f)
-                                        //lineTo(size.width , size.height)
-                                        cubicTo(x1 = size.width,y1=size.height-30f , x2 = size.width/2, y2 = size.height, x3= 0f, y3 =size.height )
-                                        lineTo(0f , 0f)
-                                        cubicTo(x1 = 0f,y1=0f , x2 = size.width/2, y2 = size.height/2+20f, x3= size.width, y3=size.height-30f )
-                                        close()
+                                    {
+                                        if(chatMap["haveTail"] =="true") {
+                                            val path = Path().apply {
+                                                moveTo(size.width, size.height - 30f)
+                                                //lineTo(size.width , size.height)
+                                                cubicTo(
+                                                    x1 = size.width,
+                                                    y1 = size.height - 30f,
+                                                    x2 = size.width / 2,
+                                                    y2 = size.height,
+                                                    x3 = 0f,
+                                                    y3 = size.height
+                                                )
+                                                lineTo(0f, 0f)
+                                                cubicTo(
+                                                    x1 = 0f,
+                                                    y1 = 0f,
+                                                    x2 = size.width / 2,
+                                                    y2 = size.height / 2 + 20f,
+                                                    x3 = size.width,
+                                                    y3 = size.height - 30f
+                                                )
+                                                close()
+                                            }
+                                            drawPath(path = path, color = sendBGCColor)
+                                        }
                                     }
-                                    drawPath(path = path, color = sendBGCColor)
+
+                                }
+                                else{
+                                    Canvas(modifier = Modifier
+                                        .size(25.dp)
+                                        .align(Alignment.Bottom)
+                                        .offset(y = -10.dp, x = 8.dp))
+                                    {
+                                        if(chatMap["haveTail"] =="true") {
+                                            val path = Path().apply {
+                                                moveTo(0f, size.height - 30f)
+                                                //lineTo(size.width , size.height)
+                                                cubicTo(
+                                                    x1 = 0f,
+                                                    y1 = size.height - 30f,
+                                                    x2 = size.width / 2,
+                                                    y2 = size.height,
+                                                    x3 = size.width,
+                                                    y3 = size.height
+                                                )
+                                                lineTo(size.width, 0f)
+                                                cubicTo(
+                                                    x1 = size.width,
+                                                    y1 = 0f,
+                                                    x2 = size.width / 2,
+                                                    y2 = size.height / 2 + 20f,
+                                                    x3 = 0f,
+                                                    y3 = size.height - 30f
+                                                )
+                                                close()
+                                            }
+                                            drawPath(path = path, color = Color.White)
+                                        }
+                                    }
                                 }
 
-                            }
-                            else{
-                                Canvas(modifier = Modifier
-                                    .size(25.dp)
-                                    .align(Alignment.Bottom)
-                                    .offset(y = -10.dp, x = 8.dp))
-                                {
-                                    val path = Path().apply {
-                                        moveTo(0f, size.height-30f)
-                                        //lineTo(size.width , size.height)
-                                        cubicTo(x1 = 0f,y1=size.height-30f , x2 = size.width/2, y2 = size.height, x3= size.width, y3 =size.height )
-                                        lineTo(size.width , 0f)
-                                        cubicTo(x1 = size.width,y1=0f , x2 = size.width/2, y2 = size.height/2+20f, x3= 0f, y3 =size.height-30f )
-                                        close()
-                                    }
-                                    drawPath(path = path, color = Color.White)
-                                }
-                            }
+
 
                             Box(
                                 modifier = Modifier

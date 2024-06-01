@@ -107,9 +107,9 @@ class WhatsAppVM(
     //chat page
     val enteredChat = mutableStateOf("")
 
-    val chatList = mutableStateOf<List<Map<String, String>>>(
+    val chatList = mutableStateOf(
         listOf(
-            mapOf(
+            mutableMapOf(
                 "sender" to "Ali farhad",
                 "sendDate" to "11/11/2011",
                 "sendTime" to "11:11",
@@ -117,8 +117,9 @@ class WhatsAppVM(
                 "editTime" to "12:12",
                 "text" to "Welcome To Chat !",
                 "type" to "send",
+                "haveTail" to "false",
             ),
-            mapOf(
+            mutableMapOf(
                 "sender" to "Ali farhad",
                 "sendDate" to "11/11/2011",
                 "sendTime" to "11:11",
@@ -126,9 +127,9 @@ class WhatsAppVM(
                 "editTime" to "12:12",
                 "text" to "try to chat with me!",
                 "type" to "send",
-
-                ),
-            mapOf(
+                "haveTail" to "true",
+            ),
+            mutableMapOf(
                 "sender" to "ADMIN",
                 "sendDate" to "11/11/2011",
                 "sendTime" to "11:11",
@@ -136,9 +137,10 @@ class WhatsAppVM(
                 "editTime" to "12:12",
                 "text" to "trying empty",
                 "type" to "receive",
+                "haveTail" to "false",
 
                 ),
-            mapOf(
+            mutableMapOf(
                 "sender" to "ADMIN",
                 "sendDate" to "11/11/2011",
                 "sendTime" to "11:11",
@@ -146,8 +148,9 @@ class WhatsAppVM(
                 "editTime" to "12:12",
                 "text" to "",
                 "type" to "receive",
+                "haveTail" to "true",
             ),
-            mapOf(
+            mutableMapOf(
                 "sender" to "Ali farhad",
                 "sendDate" to "11/11/2011",
                 "sendTime" to "11:11",
@@ -155,8 +158,9 @@ class WhatsAppVM(
                 "editTime" to "12:12",
                 "text" to "trying big one !",
                 "type" to "send",
+                "haveTail" to "false",
             ),
-            mapOf(
+            mutableMapOf(
                 "sender" to "Ali farhad",
                 "sendDate" to "11/11/2011",
                 "sendTime" to "11:11",
@@ -166,8 +170,9 @@ class WhatsAppVM(
                         "\n" +
                         "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from \"de Finibus Bonorum et Malorum\" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",
                 "type" to "send",
+                "haveTail" to "true",
             ),
-            mapOf(
+            mutableMapOf(
                 "sender" to "ADMIN",
                 "sendDate" to "11/11/2011",
                 "sendTime" to "11:11",
@@ -177,8 +182,9 @@ class WhatsAppVM(
                         "\n" +
                         "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from \"de Finibus Bonorum et Malorum\" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",
                 "type" to "receive",
+                "haveTail" to "true",
             ),
-            mapOf(
+            mutableMapOf(
                 "sender" to "Ali farhad",
                 "sendDate" to "11/11/2011",
                 "sendTime" to "11:11",
@@ -186,6 +192,7 @@ class WhatsAppVM(
                 "editTime" to "12:12",
                 "text" to "Now ; your turn to chat with us !",
                 "type" to "send",
+                "haveTail" to "true",
             ),
 
 
@@ -194,7 +201,7 @@ class WhatsAppVM(
 
 
     fun SendMessage() {
-        val mapToSend = mapOf(
+        val mapToSend = mutableMapOf(
             "sender" to "Ali farhad",
             "sendDate" to "11/11/2011",
             "sendTime" to "11:11",
@@ -202,10 +209,14 @@ class WhatsAppVM(
             "editTime" to "12:12",
             "text" to "${enteredChat.value}",
             "type" to "send",
+            "haveTail" to "true",
         )
+        chatList.value[chatList.value.lastIndex]["haveTail"] = "false"
         chatList.value = chatList.value.plus(mapToSend)
         enteredChat.value = ""
     }
+
+    var turnCounter = mutableStateOf(0)
 
 
 }
