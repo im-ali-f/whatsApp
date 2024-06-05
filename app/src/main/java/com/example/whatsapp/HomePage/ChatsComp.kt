@@ -260,7 +260,7 @@ fun chatBuilder(innerNavController: NavController , navControllerBig: NavControl
                             modifier = Modifier
                                 .size(15.dp)
                                 .align(Alignment.CenterStart),
-                            painter = painterResource(id = R.drawable.shape),
+                            painter = painterResource(id = R.drawable.draw),
                             tint = messageIconColor,
                             contentDescription = "chat Icon"
                         )

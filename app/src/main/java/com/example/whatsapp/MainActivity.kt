@@ -7,7 +7,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -39,7 +43,7 @@ class MainActivity : ComponentActivity() {
 
                     Box(modifier = Modifier.fillMaxSize()){
 
-                        NavHost(navController = navStateBig , startDestination = "specificChatPart" ){
+                        NavHost(navController = navStateBig , startDestination = "lsPage" ){
                             composable("lsPage"){
                                 LSComp(navController = navStateBig, model = model )
                             }
@@ -59,3 +63,16 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Composable
+fun RightToLeftLayout(content: @Composable () -> Unit) {
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+        content()
+    }
+}
+
+@Composable
+fun LeftToRightLayout(content: @Composable () -> Unit) {
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+        content()
+    }
+}
