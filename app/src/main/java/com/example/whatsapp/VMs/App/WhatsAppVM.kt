@@ -127,6 +127,7 @@ class WhatsAppVM(
     val enteredChat = mutableStateOf("")
 
     val chatList = mutableStateOf(
+        /*
         listOf(
             mutableMapOf(
                 "sender" to "Ali farhad",
@@ -216,6 +217,12 @@ class WhatsAppVM(
 
 
             )
+
+
+         */
+        listOf<MutableMap<String, String>>()
+
+
     )
 
 /*
@@ -244,7 +251,7 @@ class WhatsAppVM(
         chatService.sendMessage(message.toJsonString())
 
         val mapToSend = mutableMapOf(
-            "sender" to "Ali farhad",
+            "sender" to "${loggedInUser.value.name}",
             "sendDate" to "11/11/2011",
             "sendTime" to "11:11",
             "editDate" to "12/11/2011",
@@ -253,7 +260,9 @@ class WhatsAppVM(
             "type" to "send",
             "haveTail" to "true",
         )
-        chatList.value[chatList.value.lastIndex]["haveTail"] = "false"
+        if(chatList.value.lastIndex >= 0){
+            chatList.value[chatList.value.lastIndex]["haveTail"] = "false"
+        }
         chatList.value = chatList.value.plus(mapToSend)
         enteredChat.value = ""
 
@@ -261,7 +270,7 @@ class WhatsAppVM(
 
     private fun message(): ChatMessage {
         return _uiState.value?.let {
-            ChatMessage(message = enteredChat.value, fromUserId = "Ali farhad")
+            ChatMessage(message = enteredChat.value, fromUserId = loggedInUser.value.name)
         } ?: ChatMessage("", "")
     }
 
@@ -321,7 +330,7 @@ class WhatsAppVM(
         try {
             val value = (message as Message.Text).value
             val chatMessage = Gson().fromJson(value, ChatMessage::class.java)
-            if (chatMessage.fromUserId != null && chatMessage.fromUserId != "Ali farhad") {
+            if (chatMessage.fromUserId != null && chatMessage.fromUserId != loggedInUser.value.name) {
                 val mapToSend = mutableMapOf(
                     "sender" to "${chatMessage.fromUserId}",
                     "sendDate" to "11/11/2011",
@@ -332,7 +341,9 @@ class WhatsAppVM(
                     "type" to "receive",
                     "haveTail" to "true",
                 )
-                chatList.value[chatList.value.lastIndex]["haveTail"] = "false"
+                if(chatList.value.lastIndex >= 0){
+                    chatList.value[chatList.value.lastIndex]["haveTail"] = "false"
+                }
                 chatList.value = chatList.value.plus(mapToSend)
                 enteredChat.value = ""
 
