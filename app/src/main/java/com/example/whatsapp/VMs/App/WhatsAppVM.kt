@@ -3,15 +3,31 @@ package com.example.whatsapp.VMs.App
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.whatsapp.VMs.API.MainViewModel
 import com.example.whatsapp.VMs.API.UserInfoResponseListItem
+import com.google.gson.Gson
+import com.tinder.scarlet.Message
+import com.tinder.scarlet.Scarlet
+import com.tinder.scarlet.WebSocket
+import com.tinder.scarlet.WebSocket.Event.OnConnectionClosed
+import com.tinder.scarlet.WebSocket.Event.OnConnectionClosing
+import com.tinder.scarlet.WebSocket.Event.OnConnectionFailed
+import com.tinder.scarlet.WebSocket.Event.OnConnectionOpened
+import com.tinder.scarlet.WebSocket.Event.OnMessageReceived
+import com.tinder.scarlet.streamadapter.rxjava2.RxJava2StreamAdapterFactory
+import com.tinder.scarlet.websocket.okhttp.newWebSocketFactory
+import com.tinder.scarlet.ws.Receive
+import com.tinder.scarlet.ws.Send
+import io.reactivex.Flowable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import okhttp3.OkHttpClient
 
 class WhatsAppVM(
     private val mainViewModel: MainViewModel,
@@ -202,7 +218,7 @@ class WhatsAppVM(
             )
     )
 
-
+/*
     fun SendMessage() {
         val mapToSend = mutableMapOf(
             "sender" to "Ali farhad",
@@ -220,4 +236,141 @@ class WhatsAppVM(
 
     }
 
+ */
+
+    fun SendMessage() {
+        val message = message()
+        if (message.message.isEmpty()) return
+        chatService.sendMessage(message.toJsonString())
+
+        val mapToSend = mutableMapOf(
+            "sender" to "Ali farhad",
+            "sendDate" to "11/11/2011",
+            "sendTime" to "11:11",
+            "editDate" to "12/11/2011",
+            "editTime" to "12:12",
+            "text" to "${enteredChat.value}",
+            "type" to "send",
+            "haveTail" to "true",
+        )
+        chatList.value[chatList.value.lastIndex]["haveTail"] = "false"
+        chatList.value = chatList.value.plus(mapToSend)
+        enteredChat.value = ""
+
+    }
+
+    private fun message(): ChatMessage {
+        return _uiState.value?.let {
+            ChatMessage(message = enteredChat.value, fromUserId = "Ali farhad")
+        } ?: ChatMessage("", "")
+    }
+
+
+    //socket
+
+    private val _uiState = MutableLiveData(ChatScreenUiState())
+    val uiState: LiveData<ChatScreenUiState> = _uiState
+
+    private var chatService: ChatService = Scarlet.Builder()
+        .webSocketFactory(
+            OkHttpClient.Builder().build()
+                .newWebSocketFactory("wss://free.blr2.piesocket.com/v3/1?api_key=cuHKVqbaT5wdSrxVfeVydIV8TIexO2aYcqVKpTOD&notify_self=1")
+        )
+        .addStreamAdapterFactory(RxJava2StreamAdapterFactory())
+        .build().create<ChatService>()
+
+    init {
+        observerConnection()
+    }
+
+    private fun observerConnection() {
+        Log.d("TAG", "Observing Connection")
+        updateConnectionStatus(ConnectionStatus.CONNECTING)
+        chatService.observeConnection().subscribe(
+            { response ->
+                Log.d("TAG", response.toString())
+                onResponseReceived(response)
+            },
+            { error ->
+                error.localizedMessage?.let { Log.e("TAG", it) }
+            })
+    }
+    private fun onResponseReceived(response: WebSocket.Event) {
+        when (response) {
+            is OnConnectionOpened<*> ->
+                updateConnectionStatus(ConnectionStatus.OPENED)
+
+            is OnConnectionClosed ->
+                updateConnectionStatus(ConnectionStatus.CLOSED)
+
+            is OnConnectionClosing ->
+                updateConnectionStatus(ConnectionStatus.CLOSING)
+
+            is OnConnectionFailed ->
+                updateConnectionStatus(ConnectionStatus.FAILED)
+
+            is OnMessageReceived ->
+                handleOnMessageReceived(response.message)
+        }
+    }
+    private fun updateConnectionStatus(connectionStatus: ConnectionStatus) {
+        _uiState.postValue(_uiState.value?.copy(connectionStatus = connectionStatus))
+    }
+    private fun handleOnMessageReceived(message: Message) {
+        Log.d("TAG", "handleOnMessageReceived: $message")
+        try {
+            val value = (message as Message.Text).value
+            val chatMessage = Gson().fromJson(value, ChatMessage::class.java)
+            if (chatMessage.fromUserId != null && chatMessage.fromUserId != "Ali farhad") {
+                val mapToSend = mutableMapOf(
+                    "sender" to "${chatMessage.fromUserId}",
+                    "sendDate" to "11/11/2011",
+                    "sendTime" to "11:11",
+                    "editDate" to "12/11/2011",
+                    "editTime" to "12:12",
+                    "text" to "${chatMessage.message}",
+                    "type" to "receive",
+                    "haveTail" to "true",
+                )
+                chatList.value[chatList.value.lastIndex]["haveTail"] = "false"
+                chatList.value = chatList.value.plus(mapToSend)
+                enteredChat.value = ""
+
+            }
+        } catch (e: Exception) {
+            Log.e("TAG", "handleOnMessageReceived: ", e)
+        }
+    }
+
+
+}
+
+
+
+
+
+data class ChatMessage(
+    val message: String,
+    val fromUserId: String
+)
+
+fun ChatMessage.toJsonString(): String = Gson().toJson(this).toString()
+
+data class ChatScreenUiState(
+    var messages: List<ChatMessage> = listOf(),
+    val userId: String = "",
+    val message: String = "",
+    val connectionStatus: ConnectionStatus = ConnectionStatus.NOT_STARTED
+)
+interface ChatService {
+
+    @Receive
+    fun observeConnection(): Flowable<WebSocket.Event>
+
+    @Send
+    fun sendMessage(message: String)
+
+}
+enum class ConnectionStatus {
+    NOT_STARTED, OPENED, CLOSED, CONNECTING, CLOSING, FAILED, RECEIVED
 }

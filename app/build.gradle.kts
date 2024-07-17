@@ -88,5 +88,22 @@ dependencies {
     //viewmodel
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
 
+    // LiveData
+    implementation("androidx.compose.runtime:runtime-livedata:1.7.0-alpha02")
+
+    // Scarlet
+    implementation("com.tinder.scarlet:scarlet:0.1.12")
+    implementation("com.tinder.scarlet:websocket-okhttp:0.1.12")
+    implementation("com.tinder.scarlet:stream-adapter-rxjava2:0.1.12")
+
+    //RX
+    implementation("io.reactivex.rxjava2:rxjava:2.2.21")
+    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
+    implementation("io.reactivex.rxjava2:rxkotlin:2.4.0")
+
+    // Gson
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation(kotlin("script-runtime"))
+
 
 }

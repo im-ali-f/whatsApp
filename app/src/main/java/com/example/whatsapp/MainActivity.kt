@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
 
                     Box(modifier = Modifier.fillMaxSize()){
 
-                        NavHost(navController = navStateBig , startDestination = "lsPage" ){
+                        NavHost(navController = navStateBig , startDestination = "specificChatPart" ){
                             composable("lsPage"){
                                 LSComp(navController = navStateBig, model = model )
                             }
